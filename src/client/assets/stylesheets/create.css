@@ -3,13 +3,17 @@
 /* -------------------  MOBILE  --------------------- */
 
 header {
-  background-image: url('https://via.placeholder.com/1150');
+  background-color: #0799de;
+  text-align: center;
+  padding: 2rem;
 }
 
+#create-race {
+  text-align: center;
+}
 
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
-
 }
 
 /* -------------------  DESKTOP  -------------------- */

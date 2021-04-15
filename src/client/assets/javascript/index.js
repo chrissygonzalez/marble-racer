@@ -285,7 +285,7 @@ function raceProgress(positions) {
 		<main>
 			<h3>Leaderboard</h3>
 			<section id="leaderBoard">
-				${results}
+				${results.join('')}
 			</section>
 		</main>
 	`;
