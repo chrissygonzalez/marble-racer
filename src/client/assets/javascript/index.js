@@ -83,15 +83,15 @@ async function handleCreateRace() {
   store.race_id = parseInt(race.ID);
   renderAt('#race', renderRaceStartView({ name: `Race ${store.race_id}` }));
 
-  runCountdown();
-  startRace(store.race_id - 1);
-  runRace(store.race_id);
+  runCountdown()
+    .then((id) => startRace(id))
+    .then(() => runRace());
 }
 
-function runRace(raceID) {
+function runRace() {
   return new Promise((resolve) => {
     const raceInterval = setInterval(async () => {
-      let info = await getRace(raceID - 1);
+      let info = await getRace(store.race_id - 1);
       if (info.status === 'in-progress') {
         renderAt('#leaderBoard', raceProgress(info.positions));
       }
@@ -102,7 +102,7 @@ function runRace(raceID) {
       }
     }, 500);
   });
-  // remember to add error handling for the Promise
+  // TODO: remember to add error handling for the Promise
 }
 
 async function runCountdown() {
@@ -113,11 +113,12 @@ async function runCountdown() {
 
     return new Promise((resolve) => {
       const countInterval = setInterval(() => {
+        // debugger;
         document.getElementById('big-numbers').innerHTML = timer;
         timer--;
         if (timer < 0) {
           clearInterval(countInterval);
-          resolve();
+          resolve(store.race_id);
         }
       }, 500);
     });
@@ -137,8 +138,6 @@ function handleSelectPodRacer(target) {
 
   // add class selected to current target
   target.classList.add('selected');
-
-  // TODO - save the selected racer to the store
   store.player_id = parseInt(target.id);
 }
 
@@ -161,6 +160,7 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
   console.log('accelerate button clicked');
   // TODO - Invoke the API call to accelerate
+  accelerate(store.race_id);
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -355,19 +355,17 @@ function getRace(id) {
 }
 
 function startRace(id) {
-  return fetch(`${SERVER}/api/races/${id}/start`, {
+  return fetch(`${SERVER}/api/races/${id - 1}/start`, {
     method: 'POST',
     ...defaultFetchOpts(),
-  })
-    .then(() => console.log('startRace ok!'))
-    .catch((err) => console.log('Problem with getRace request::', err.message));
+  }).catch((err) => console.log('Problem with getRace request::', err.message));
 }
 
 function accelerate(id) {
   // POST request to `${SERVER}/api/races/${id}/accelerate`
   // options parameter provided as defaultFetchOpts
   // no body or datatype needed for this request
-  return fetch(`${SERVER}/api/races/${id}/accelerate`, {
+  return fetch(`${SERVER}/api/races/${id - 1}/accelerate`, {
     method: 'POST',
     ...defaultFetchOpts(),
   })
