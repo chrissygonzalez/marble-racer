@@ -88,20 +88,23 @@ async function handleCreateRace() {
 }
 
 function runRace() {
-  return new Promise((resolve) => {
-    const raceInterval = setInterval(async () => {
-      let info = await getRace(store.race_id - 1);
-      if (info.status === 'in-progress') {
-        renderAt('#leaderBoard', raceProgress(info.positions));
-      }
-      if (info.status === 'finished') {
-        renderAt('#race', resultsView(info.positions)); // to render the results view
-        clearInterval(raceInterval); // to stop the interval from repeating
-        resolve();
-      }
-    }, 500);
-  });
-  // TODO: remember to add error handling for the Promise
+  try {
+    return new Promise((resolve) => {
+      const raceInterval = setInterval(async () => {
+        let info = await getRace(store.race_id - 1);
+        if (info.status === 'in-progress') {
+          renderAt('#leaderBoard', raceProgress(info.positions));
+        }
+        if (info.status === 'finished') {
+          renderAt('#race', resultsView(info.positions));
+          clearInterval(raceInterval);
+          resolve();
+        }
+      }, 500);
+    });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function runCountdown() {
@@ -112,7 +115,6 @@ async function runCountdown() {
 
     return new Promise((resolve) => {
       const countInterval = setInterval(() => {
-        // debugger;
         document.getElementById('big-numbers').innerHTML = timer;
         timer--;
         if (timer < 0) {
@@ -241,7 +243,6 @@ function renderRaceStartView(track, racers) {
 				<button id="gas-pedal">Click to Go Faster</button>
 			</section>
 		</main>
-		<footer></footer>
 	`;
 }
 
@@ -309,8 +310,6 @@ function defaultFetchOpts() {
     },
   };
 }
-
-// TODO - Make a fetch call (with error handling!) to each of the following API endpoints
 
 function getTracks() {
   // GET request to `${SERVER}/api/tracks`
