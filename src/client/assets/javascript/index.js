@@ -30,7 +30,6 @@ async function onPageLoad() {
   }
 }
 
-// TODO make this work better
 function setupClickHandlers() {
   document.addEventListener(
     'click',
@@ -56,7 +55,7 @@ function setupClickHandlers() {
       }
 
       // Handle acceleration click
-      if (target.matches('#gas-peddle')) {
+      if (target.matches('#gas-pedal')) {
         handleAccelerate(target);
       }
     },
@@ -158,8 +157,6 @@ function handleSelectTrack(target) {
 }
 
 function handleAccelerate() {
-  console.log('accelerate button clicked');
-  // TODO - Invoke the API call to accelerate
   accelerate(store.race_id);
 }
 
@@ -216,7 +213,7 @@ function renderTrackCard(track) {
 
   return `
 		<li id="${id}" class="card track">
-			<h3>${name}</h3>
+			<h4>${name}</h4>
 		</li>
 	`;
 }
@@ -241,7 +238,7 @@ function renderRaceStartView(track, racers) {
 			<section id="accelerate">
 				<h2>Directions</h2>
 				<p>Click the button as fast as you can to make your racer go faster!</p>
-				<button id="gas-peddle">Click Me To Win!</button>
+				<button id="gas-pedal">Click to Go Faster</button>
 			</section>
 		</main>
 		<footer></footer>
@@ -255,9 +252,9 @@ function resultsView(positions) {
 		<header>
 			<h1>Race Results</h1>
 		</header>
-		<main>
+		<main class="results">
 			${raceProgress(positions)}
-			<a href="/race">Start a new race</a>
+			<a class="button" href="/race">Start a new race</a>
 		</main>
 	`;
 }
@@ -283,7 +280,7 @@ function raceProgress(positions) {
 
   return `
 		<main>
-			<h3>Leaderboard</h3>
+			<h2>Leaderboard</h2>
 			<section id="leaderBoard">
 				${results.join('')}
 			</section>
@@ -369,7 +366,7 @@ function accelerate(id) {
     method: 'POST',
     ...defaultFetchOpts(),
   })
-    .then(() => console.log('accelerate ok!'))
+    .then(() => {})
     .catch((err) =>
       console.log('Problem with accelerate request::', err.message)
     );

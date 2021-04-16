@@ -8,6 +8,16 @@ header {
   padding: 2rem;
 }
 
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}
+
+.race-main {
+  background-color: #eaeaea;
+}
+
 #create-race {
   text-align: center;
 }

@@ -11,13 +11,24 @@ main#two-columns section {
 }
 
 section#accelerate button {
-  height: 300px;
+  height: 150px;
   width: 300px;
   margin: 30px auto;
   border-radius: 180%;
-  background-color: green;
-  border-color: rgb(14, 166, 6);
+  background-color: #ff4c08;
+  border-color: #9c2e04;
   cursor: pointer;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+section#accelerate button:hover {
+  background-color: #d13f06;
+}
+
+section#accelerate button:active {
+  background-color: #000;
 }
 
 #big-numbers {
